@@ -34,8 +34,6 @@
     [contView addSubview:toVC.view];
 
     
-    
-    
     //创建两个圆形的 UIBezierPath 实例；一个是 button 的 size ，另外一个则拥有足够覆盖屏幕的半径。最终的动画则是在这两个贝塞尔路径之间进行的
     UIBezierPath *maskStartBP =  [UIBezierPath bezierPathWithOvalInRect:button.frame];
     
