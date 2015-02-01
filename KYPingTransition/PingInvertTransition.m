@@ -51,6 +51,7 @@
     pingAnimation.duration = [self transitionDuration:transitionContext];
     pingAnimation.delegate = self;
     
+    
     [maskLayer addAnimation:pingAnimation forKey:@"pingInvert"];
     
 }
