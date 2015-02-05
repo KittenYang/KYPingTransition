@@ -19,7 +19,7 @@
 @implementation PingTransition
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext{
-    return  0.2f;
+    return  0.7f;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext{
@@ -30,15 +30,62 @@
     SecondViewController *toVC = (SecondViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIView *contView = [transitionContext containerView];
     UIButton *button = fromVC.button;
+
+    UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, button.frame.size.width, button.frame.size.height)];
+    abutton.backgroundColor = [UIColor blackColor];
+    abutton.titleLabel.text = @"1";
+    abutton.alpha = 1;
+    abutton.layer.cornerRadius = 24.0f;
+    [toVC.view addSubview:abutton];
     
+    
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        abutton.transform = CGAffineTransformScale(abutton.transform, 0.1, 0.1);
+        abutton.alpha = 0;
+    } completion:^(BOOL finished) {
+    }];
+    
+    
+    UIBezierPath *maskStartBP =  [UIBezierPath bezierPathWithOvalInRect:button.frame];    
+    [contView addSubview:fromVC.view];
     [contView addSubview:toVC.view];
 
     
-    //创建两个圆形的 UIBezierPath 实例；一个是 button 的 size ，另外一个则拥有足够覆盖屏幕的半径。最终的动画则是在这两个贝塞尔路径之间进行的
-    UIBezierPath *maskStartBP =  [UIBezierPath bezierPathWithOvalInRect:button.frame];
+    [UIView animateWithDuration:[self transitionDuration:transitionContext]/2 delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        button.transform = CGAffineTransformScale(button.transform, 0.1, 0.1);
+    } completion:^(BOOL finished) {
+        if (finished) {
+            button.transform = CGAffineTransformIdentity;
+        }
+    }];
     
-//    CGPoint finalPoint = CGPointMake(button.center.x - 0, button.center.y - CGRectGetMaxY(toVC.view.bounds));
-    CGPoint finalPoint = CGPointMake(button.center.x - 0, button.center.y - CGRectGetMaxY(toVC.view.bounds));
+    
+    
+    
+    //创建两个圆形的 UIBezierPath 实例；一个是 button 的 size ，另外一个则拥有足够覆盖屏幕的半径。最终的动画则是在这两个贝塞尔路径之间进行的
+    
+    CGPoint finalPoint;
+    //判断触发点在那个象限
+    if(button.frame.origin.x > (toVC.view.bounds.size.width / 2)){
+        if (button.frame.origin.y < (toVC.view.bounds.size.height / 2)) {
+            //第一象限
+            finalPoint = CGPointMake(button.center.x - 0, button.center.y - CGRectGetMaxY(toVC.view.bounds)+30);
+        }else{
+            //第四象限
+            finalPoint = CGPointMake(button.center.x - 0, button.center.y - 0);
+        }
+    }else{
+        if (button.frame.origin.y < (toVC.view.bounds.size.height / 2)) {
+            //第二象限
+            finalPoint = CGPointMake(button.center.x - CGRectGetMaxX(toVC.view.bounds), button.center.y - CGRectGetMaxY(toVC.view.bounds)+30);
+        }else{
+            //第三象限
+            finalPoint = CGPointMake(button.center.x - CGRectGetMaxX(toVC.view.bounds), button.center.y - 0);
+        }
+    }
+    
+    
+    
     CGFloat radius = sqrt((finalPoint.x * finalPoint.x) + (finalPoint.y * finalPoint.y));
     UIBezierPath *maskFinalBP = [UIBezierPath bezierPathWithOvalInRect:CGRectInset(button.frame, -radius, -radius)];
     
@@ -47,8 +94,24 @@
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
     maskLayer.path = maskFinalBP.CGPath; //将它的 path 指定为最终的 path 来避免在动画完成后会回弹
     toVC.view.layer.mask = maskLayer;
+    
+    
+    
+    CABasicAnimation *maskLayerAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
+    maskLayerAnimation.fromValue = (__bridge id)(maskStartBP.CGPath);
+    maskLayerAnimation.toValue = (__bridge id)((maskFinalBP.CGPath));
+    maskLayerAnimation.duration = [self transitionDuration:transitionContext];
+    maskLayerAnimation.timingFunction = [CAMediaTimingFunction  functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    maskLayerAnimation.delegate = self;
+    
+    [maskLayer addAnimation:maskLayerAnimation forKey:@"path"];
+    
 
     
+    
+
+/*  POP的弹框效果 CGPathRef
+ 
     CAKeyframeAnimation *keyFrame = [CAKeyframeAnimation animationWithKeyPath:@"path"];
     keyFrame.values = @[(__bridge id)(maskStartBP.CGPath),(__bridge id)(maskFinalBP.CGPath)];
     keyFrame.duration = 100.0f;
@@ -78,29 +141,20 @@
     POPSpringAnimation *popSpring = [POPSpringAnimation animation];
     popSpring.fromValue = @(0.0);
     popSpring.toValue =  @(100.f);
-    popSpring.springBounciness = 2.1;
-    popSpring.springSpeed = 200.4;
-    popSpring.dynamicsTension = 200;
-    popSpring.dynamicsFriction = 100.f;
-    popSpring.dynamicsMass = 1.f;
+    popSpring.springBounciness = 1.0;//弹性
+    popSpring.springSpeed = 20.0;//速度
+    popSpring.dynamicsTension = 700;//张力
+    popSpring.dynamicsFriction = 5; // 摩擦力
+    popSpring.dynamicsMass = 1;
     popSpring.property = pop;
-    popSpring.delegate  = self;
+    popSpring.delegate = self;
     [maskLayer pop_addAnimation:popSpring forKey:nil];
     
-    
+  */
   
 //    kPOPShapeLayerStrokeStart
     
     //创建一个关于 path 的 CABasicAnimation 动画来从 circleMaskPathInitial.CGPath 到 circleMaskPathFinal.CGPath 。同时指定它的 delegate 来在完成动画时做一些清除工作
-//    CABasicAnimation *maskLayerAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
-//    maskLayerAnimation.fromValue = (__bridge id)(maskStartBP.CGPath);
-//    maskLayerAnimation.toValue = (__bridge id)((maskFinalBP.CGPath));
-//    maskLayerAnimation.duration = [self transitionDuration:transitionContext];
-//    maskLayerAnimation.timingFunction = [CAMediaTimingFunction  functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//    maskLayerAnimation.delegate = self;
-//    
-//    [maskLayer addAnimation:maskLayerAnimation forKey:@"path"];
-    
     
 }
 

@@ -17,12 +17,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dBl-cm-NDH">
-                                <rect key="frame" x="520" y="30" width="48" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dBl-cm-NDH">
+                                <rect key="frame" x="31" y="537" width="48" height="48"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="Ehh-vh-a2p"/>
-                                    <constraint firstAttribute="width" constant="48" id="s1o-qp-XkI"/>
+                                    <constraint firstAttribute="height" constant="48" id="NPd-Q4-6HM"/>
+                                    <constraint firstAttribute="width" constant="48" id="TWv-3s-lZT"/>
                                 </constraints>
                                 <state key="normal" title="1">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -39,8 +39,8 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="dBl-cm-NDH" secondAttribute="trailing" constant="16" id="8bD-cP-9pR"/>
-                            <constraint firstItem="dBl-cm-NDH" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="PkX-m4-niK"/>
+                            <constraint firstItem="dBl-cm-NDH" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="15" id="9cw-NH-Ddx"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="dBl-cm-NDH" secondAttribute="bottom" constant="15" id="Gi2-E0-tpF"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="aqs-4h-r2I"/>
@@ -50,7 +50,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1028" y="-361"/>
+            <point key="canvasLocation" x="1074" y="-345"/>
         </scene>
         <!--New View Controller-->
         <scene sceneID="2E4-he-Rl7">
@@ -63,37 +63,8 @@
                     <view key="view" contentMode="scaleToFill" id="Wyz-eT-dZW">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HRk-ci-itR">
-                                <rect key="frame" x="520" y="30" width="48" height="48"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="48" id="O3n-sE-pEa"/>
-                                    <constraint firstAttribute="height" constant="48" id="iJt-pc-Fcb"/>
-                                </constraints>
-                                <state key="normal" title="2">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="24"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="clickToPop:" destination="pKA-ac-Cz0" eventType="touchUpInside" id="nF5-5A-BFA"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="HRk-ci-itR" secondAttribute="trailing" constant="16" id="IkI-hm-efM"/>
-                            <constraint firstItem="HRk-ci-itR" firstAttribute="top" secondItem="fBt-ez-ZhJ" secondAttribute="bottom" constant="8" id="e7Y-tX-Vsu"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="button" destination="HRk-ci-itR" id="JKq-4D-F92"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LTs-x8-lxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
