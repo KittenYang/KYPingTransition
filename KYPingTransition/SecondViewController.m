@@ -76,5 +76,8 @@
     }
 }
 
+- (IBAction)popClicked:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end

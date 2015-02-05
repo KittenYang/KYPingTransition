@@ -33,7 +33,6 @@
 
     UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, button.frame.size.width, button.frame.size.height)];
     abutton.backgroundColor = [UIColor blackColor];
-    abutton.titleLabel.text = @"1";
     abutton.alpha = 1;
     abutton.layer.cornerRadius = 24.0f;
     [toVC.view addSubview:abutton];
