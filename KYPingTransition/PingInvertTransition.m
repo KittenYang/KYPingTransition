@@ -19,7 +19,7 @@
 @implementation PingInvertTransition
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext{
-    return 0.5f;
+    return 0.2f;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext{
@@ -49,6 +49,8 @@
     pingAnimation.fromValue = (__bridge id)(startPath.CGPath);
     pingAnimation.toValue   = (__bridge id)(finalPath.CGPath);
     pingAnimation.duration = [self transitionDuration:transitionContext];
+    pingAnimation.timingFunction = [CAMediaTimingFunction  functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+
     pingAnimation.delegate = self;
     
     

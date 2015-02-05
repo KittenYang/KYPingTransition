@@ -19,7 +19,7 @@
 @implementation PingTransition
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext{
-    return  0.5f;
+    return  0.2f;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext{
@@ -47,19 +47,71 @@
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
     maskLayer.path = maskFinalBP.CGPath; //将它的 path 指定为最终的 path 来避免在动画完成后会回弹
     toVC.view.layer.mask = maskLayer;
+
     
+    CAKeyframeAnimation *keyFrame = [CAKeyframeAnimation animationWithKeyPath:@"path"];
+    keyFrame.values = @[(__bridge id)(maskStartBP.CGPath),(__bridge id)(maskFinalBP.CGPath)];
+    keyFrame.duration = 100.0f;
+    keyFrame.additive = YES;
+    keyFrame.removedOnCompletion = NO;
+    keyFrame.fillMode = kCAFillModeForwards;
+    
+    
+    [maskLayer addAnimation:keyFrame forKey:nil];
+    maskLayer.speed = 0.0;
+    
+    
+    POPAnimatableProperty* pop = [POPAnimatableProperty propertyWithName:@"timeOffset" initializer:^(POPMutableAnimatableProperty *prop) {
+        // read value
+        prop.readBlock = ^(CAShapeLayer *obj, CGFloat values[]) {
+            values[0] = obj.timeOffset;
+        };
+        // write value
+        prop.writeBlock = ^(CAShapeLayer *obj, const CGFloat values[]) {
+            obj.timeOffset = values[0];
+        };
+        // dynamics threshold
+        prop.threshold = 0.1;
+    }];
+    
+    
+    POPSpringAnimation *popSpring = [POPSpringAnimation animation];
+    popSpring.fromValue = @(0.0);
+    popSpring.toValue =  @(100.f);
+    popSpring.springBounciness = 2.1;
+    popSpring.springSpeed = 200.4;
+    popSpring.dynamicsTension = 200;
+    popSpring.dynamicsFriction = 100.f;
+    popSpring.dynamicsMass = 1.f;
+    popSpring.property = pop;
+    popSpring.delegate  = self;
+    [maskLayer pop_addAnimation:popSpring forKey:nil];
+    
+    
+  
+//    kPOPShapeLayerStrokeStart
     
     //创建一个关于 path 的 CABasicAnimation 动画来从 circleMaskPathInitial.CGPath 到 circleMaskPathFinal.CGPath 。同时指定它的 delegate 来在完成动画时做一些清除工作
-    CABasicAnimation *maskLayerAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
-    maskLayerAnimation.fromValue = (__bridge id)(maskStartBP.CGPath);
-    maskLayerAnimation.toValue = (__bridge id)((maskFinalBP.CGPath));
-    maskLayerAnimation.duration = [self transitionDuration:transitionContext];
-    maskLayerAnimation.delegate = self;
+//    CABasicAnimation *maskLayerAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
+//    maskLayerAnimation.fromValue = (__bridge id)(maskStartBP.CGPath);
+//    maskLayerAnimation.toValue = (__bridge id)((maskFinalBP.CGPath));
+//    maskLayerAnimation.duration = [self transitionDuration:transitionContext];
+//    maskLayerAnimation.timingFunction = [CAMediaTimingFunction  functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//    maskLayerAnimation.delegate = self;
+//    
+//    [maskLayer addAnimation:maskLayerAnimation forKey:@"path"];
     
-    [maskLayer addAnimation:maskLayerAnimation forKey:@"path"];
     
 }
 
+
+- (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished{
+    //告诉 iOS 这个 transition 完成
+    [self.transitionContext completeTransition:![self. transitionContext transitionWasCancelled]];
+    //清除 fromVC 的 mask
+    [self.transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view.layer.mask = nil;
+    [self.transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view.layer.mask = nil;
+}
 #pragma mark - CABasicAnimation的Delegate
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
 
