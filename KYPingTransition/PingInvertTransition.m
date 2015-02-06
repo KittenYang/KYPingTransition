@@ -61,6 +61,7 @@
     UIBezierPath *finalPath = [UIBezierPath bezierPathWithOvalInRect:button.frame];
     
     CGPoint finalPoint;
+    
     //判断触发点在那个象限
     if(button.frame.origin.x > (toVC.view.bounds.size.width / 2)){
         if (button.frame.origin.y < (toVC.view.bounds.size.height / 2)) {
