@@ -95,7 +95,6 @@
     toVC.view.layer.mask = maskLayer;
     
     
-    
     CABasicAnimation *maskLayerAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
     maskLayerAnimation.fromValue = (__bridge id)(maskStartBP.CGPath);
     maskLayerAnimation.toValue = (__bridge id)((maskFinalBP.CGPath));
