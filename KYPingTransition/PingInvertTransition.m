@@ -32,26 +32,7 @@
     SecondViewController *fromVC = (SecondViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     ViewController *toVC   = (ViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIView *containerView = [transitionContext containerView];
-
     UIButton *button = toVC.button;
-    
-    
-    
-    UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, button.frame.size.width, button.frame.size.height)];
-    abutton.backgroundColor = [UIColor blackColor];
-    abutton.layer.cornerRadius = 24.0f;
-    abutton.alpha = 0;
-    abutton.transform = CGAffineTransformScale(abutton.transform, 0.1, 0.1);
-    [fromVC.view addSubview:abutton];
-    
-    
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        abutton.alpha = 1;
-        abutton.transform = CGAffineTransformIdentity;
-    } completion:^(BOOL finished) {
-        abutton.alpha = 0;
-    }];
-    
     
     
     [containerView addSubview:toVC.view];
@@ -105,6 +86,7 @@
 
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
+    
     [self.transitionContext completeTransition:![self.transitionContext transitionWasCancelled]];
     [self.transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view.layer.mask = nil;
     [self.transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view.layer.mask = nil;

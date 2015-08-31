@@ -29,36 +29,14 @@
     ViewController * fromVC = (ViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     SecondViewController *toVC = (SecondViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIView *contView = [transitionContext containerView];
-    UIButton *button = fromVC.button;
 
-    UIButton *abutton = [[UIButton alloc]initWithFrame:CGRectMake(button.frame.origin.x, button.frame.origin.y, button.frame.size.width, button.frame.size.height)];
-    abutton.backgroundColor = [UIColor blackColor];
-    abutton.alpha = 1;
-    abutton.layer.cornerRadius = 24.0f;
-    [toVC.view addSubview:abutton];
-    
-    
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-        abutton.transform = CGAffineTransformScale(abutton.transform, 0.1, 0.1);
-        abutton.alpha = 0;
-    } completion:^(BOOL finished) {
-    }];
+    UIButton *button = fromVC.button;
     
     
     UIBezierPath *maskStartBP =  [UIBezierPath bezierPathWithOvalInRect:button.frame];    
     [contView addSubview:fromVC.view];
     [contView addSubview:toVC.view];
 
-    
-    [UIView animateWithDuration:[self transitionDuration:transitionContext]/2 delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        button.transform = CGAffineTransformScale(button.transform, 0.1, 0.1);
-    } completion:^(BOOL finished) {
-        if (finished) {
-            button.transform = CGAffineTransformIdentity;
-        }
-    }];
-    
-    
     
     
     //创建两个圆形的 UIBezierPath 实例；一个是 button 的 size ，另外一个则拥有足够覆盖屏幕的半径。最终的动画则是在这两个贝塞尔路径之间进行的
